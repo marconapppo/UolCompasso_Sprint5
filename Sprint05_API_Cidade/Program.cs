@@ -18,13 +18,17 @@ namespace Sprint05_API_Cidade
             //testando banco
             using(var contexto = new CidadeContexto())
             {
-                Cidade c = new Cidade();
+                Cliente c = new Cliente();
                 c.Id = Guid.NewGuid();
                 c.Nome = "ara";
-                c.Estado = "ara";
-                contexto.Cidades.Add(c);
-                //contexto.SaveChanges();
-                foreach (var item in contexto.Cidades)
+                c.DataNascimento =  DateTime.Now;
+                c.CidadeId = Guid.Parse("d7f96995-6dfc-4a98-9c48-0495393cd092");
+                c.Cep = "a";
+                c.Logradouro = "a";
+                c.Bairro = "a";
+                contexto.Clientes.Add(c);
+                contexto.SaveChanges();
+                foreach (var item in contexto.Clientes)
                 {
                     Console.WriteLine(item.Id);
                 }

@@ -9,7 +9,7 @@ CREATE TABLE [CIDADE](
 CREATE TABLE CLIENTE(
 	[Id] [uniqueidentifier] NOT NULL,
     NOME VARCHAR(30) NOT NULL,
-    DATA_NASC date NOT NULL,
+    DATA_NASC datetime2 NOT NULL,
     CIDADE_ID [uniqueidentifier] NOT NULL,
     CEP VARCHAR(15),
     LOGRADOURO VARCHAR(30),

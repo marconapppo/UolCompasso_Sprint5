@@ -10,22 +10,27 @@ namespace Sprint05_API_Cidade
         {
             builder.ToTable("CLIENTE");
 
-            builder.Property<Guid>("ID").IsRequired();
-            builder.Property<string>("NOME").IsRequired();
-            builder.Property<DateTime>("DATA_NASC")
+            builder.Property(ci => ci.Id).IsRequired();
+            builder.Property(ci => ci.Nome).IsRequired();
+            builder.Property(ci => ci.DataNascimento)
                 .IsRequired()
                 .HasColumnType("datetime")
+                .HasColumnName("DATA_NASC")
                 .HasDefaultValueSql("getdate()");
-            builder.Property<Guid>("CIDADE_ID").IsRequired();
-            builder.Property<string>("CEP").IsRequired();
-            builder.Property<string>("LOGRADOURO").IsRequired();
-            builder.Property<string>("BAIRRO").IsRequired();
+            builder.Property(ci => ci.CidadeId)
+                .IsRequired()
+                .HasColumnName("CIDADE_ID");
+            builder.Property(ci => ci.Cep).IsRequired();
+            builder.Property(ci => ci.Logradouro).IsRequired();
+            builder.Property(ci => ci.Bairro).IsRequired();
 
-            builder.HasKey("ID", "CIDADE_ID");
+            //builder.HasKey(ci => ci.Id);
+            //builder.HasKey("ID", "CIDADE_ID");
 
             builder.HasOne(ci => ci.Cidade)
                 .WithMany(cl => cl.Clientes)
-                .HasForeignKey(ci => ci.CidadeId);
+                .HasForeignKey(ci => ci.CidadeId)
+                .HasPrincipalKey(ci => ci.Id);
         }
     }
 }
