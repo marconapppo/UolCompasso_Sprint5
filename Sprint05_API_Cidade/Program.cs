@@ -13,7 +13,22 @@ namespace Sprint05_API_Cidade
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            //CreateHostBuilder(args).Build().Run();
+
+            //testando banco
+            using(var contexto = new CidadeContexto())
+            {
+                Cidade c = new Cidade();
+                c.Id = Guid.NewGuid();
+                c.Nome = "ara";
+                c.Estado = "ara";
+                contexto.Cidades.Add(c);
+                //contexto.SaveChanges();
+                foreach (var item in contexto.Cidades)
+                {
+                    Console.WriteLine(item.Id);
+                }
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
