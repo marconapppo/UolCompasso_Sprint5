@@ -57,3 +57,15 @@ C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\obj\Debug\ne
 C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\obj\Debug\net5.0\ref\Sprint05_API_Cidade.dll
 C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\obj\Debug\net5.0\Sprint05_API_Cidade.pdb
 C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\obj\Debug\net5.0\Sprint05_API_Cidade.genruntimeconfig.cache
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\Google.Protobuf.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\K4os.Compression.LZ4.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\K4os.Compression.LZ4.Streams.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\K4os.Hash.xxHash.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\MySql.Data.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\Ubiety.Dns.Core.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\Zstandard.Net.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\MySql.EntityFrameworkCore.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.InMemory.dll
