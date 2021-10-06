@@ -52,6 +52,7 @@ namespace Sprint05_API_Cidade.Controllers
             }
             return NotFound();
         }
+
         [HttpPut("{id}")]
         public IActionResult AtualizaCidade(Guid id, [FromBody] UpdateCidadeDTO cidadeDto)
         {
