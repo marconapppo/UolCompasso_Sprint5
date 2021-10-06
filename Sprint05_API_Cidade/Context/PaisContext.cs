@@ -4,10 +4,9 @@ using System;
 
 namespace Sprint05_API_Cidade
 {
-    public class CidadeContexto : DbContext
+    public class PaisContext : DbContext
     {
         
-
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
 

@@ -12,6 +12,6 @@ namespace Sprint05_API_Cidade
         public string Nome { get; set; }
         [Required(ErrorMessage = "O campo Estado é obrigatório")]
         public string Estado { get; set; }
-        public List<Cliente> Clientes { get; set; }
+        //public List<Cliente> Clientes { get; set; }
     }
 }

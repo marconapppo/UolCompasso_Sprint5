@@ -12,7 +12,7 @@ namespace Sprint05_API_Cidade.Controllers
     [Route("[controller]")]
     public class CidadeController : ControllerBase
     {
-        private CidadeContexto _context = new CidadeContexto();
+        private PaisContext _context = new PaisContext();
         private IMapper _mapper;
 
         public CidadeController(IMapper mapper)
@@ -21,22 +21,62 @@ namespace Sprint05_API_Cidade.Controllers
         }
 
         [HttpPost]
-        public void PutCidade([FromBody] CreateCidadeDTO cidadeDTO)
+        public IActionResult CreateCidade([FromBody] CreateCidadeDTO cidadeDTO)
         {
             Cidade cidade = _mapper.Map<Cidade>(cidadeDTO);
-            Console.WriteLine(cidadeDTO.Estado);
-            Console.WriteLine(cidade.Estado);
             _context.Cidades.Add(cidade);
             _context.SaveChanges();
-            //return _context.Cidades;
-            //return CreatedAtAction(nameof(RecuperaFilmesPorId), new { Id = filme.Id }, filme);
+            return CreatedAtAction(nameof(RecuperaCidadePorId), new { Id = cidade.Id }, cidade);
         }
 
-        //[HttpGet]
-        //public IEnumerable<Cidade> GetCidade()
-        //{
+        [HttpGet]
+        public List<ReadCidadeDTO> GetCidade()
+        {
+            List<ReadCidadeDTO> cidadeDto = new List<ReadCidadeDTO>();
+            foreach (var cidade in _context.Cidades)
+            {
+                cidadeDto.Add(_mapper.Map<ReadCidadeDTO>(cidade));
+            }
+            return cidadeDto;
+        }
 
-        //    return _context.Cidades;
-        //}
+        [HttpGet("{id}")]
+        public IActionResult RecuperaCidadePorId(Guid id)
+        {
+            Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Id == id);
+            if (cidade != null)
+            {
+                ReadCidadeDTO cidadeDto = _mapper.Map<ReadCidadeDTO>(cidade);
+
+                return Ok(cidadeDto);
+            }
+            return NotFound();
+        }
+        [HttpPut("{id}")]
+        public IActionResult AtualizaCidade(Guid id, [FromBody] UpdateCidadeDTO cidadeDto)
+        {
+            Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Id == id);
+            if (cidade == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(cidadeDto, cidade);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeletaCidade(Guid id)
+        {
+            Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Id == id);
+            if (cidade == null)
+            {
+                return NotFound();
+            }
+            _context.Remove(cidade);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
     }
 }

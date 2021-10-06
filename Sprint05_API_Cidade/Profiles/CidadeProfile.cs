@@ -11,5 +11,6 @@ namespace Sprint05_API_Cidade
             CreateMap<Cidade, ReadCidadeDTO>();
             CreateMap<UpdateCidadeDTO, Cidade>();
         }
+        
     }
 }
