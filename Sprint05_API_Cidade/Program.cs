@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ViaCepConsumer;
+
 
 namespace Sprint05_API_Cidade
 {
@@ -13,9 +10,19 @@ namespace Sprint05_API_Cidade
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            //CreateHostBuilder(args).Build().Run();
+            //var t = ViaCepConsumer
+            //var a = RestService.For<>
+            //SearchResult r = new SearchResult();
 
-            
+            ViaCepClient v = new ViaCepClient();
+            var t = v.Search("01001-000");
+
+
+            Console.WriteLine(t.Cidade);
+
+
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

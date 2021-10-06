@@ -33,6 +33,7 @@ namespace Sprint05_API_Cidade.Controllers
         public List<ReadCidadeDTO> GetCidade()
         {
             List<ReadCidadeDTO> cidadeDto = new List<ReadCidadeDTO>();
+            
             foreach (var cidade in _context.Cidades)
             {
                 cidadeDto.Add(_mapper.Map<ReadCidadeDTO>(cidade));

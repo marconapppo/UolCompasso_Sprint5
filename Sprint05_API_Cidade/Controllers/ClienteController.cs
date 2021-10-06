@@ -20,8 +20,8 @@ namespace Sprint05_API_Cidade.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
-        public IActionResult CreateCliente([FromBody] CreateClienteDTO clienteDTO)
+        [HttpPost("{CEP}")]
+        public IActionResult CreateCliente([FromBody] CreateClienteDTO clienteDTO, String cep)
         {
             Cliente cliente = _mapper.Map<Cliente>(clienteDTO);
             _context.Clientes.Add(cliente);
