@@ -30,8 +30,8 @@ namespace Sprint05_API_Cidade
         {
             //services.AddDbContext<CidadeContexto>(opts => opts.UseMySQL(Configuration.GetConnectionString("CidadeConnection")));
             services.AddControllers();
-            services.AddDbContext<CidadeContexto>(opt =>
-                                               opt.UseInMemoryDatabase("SPRINT05_CIDADES_CLIENTES"));
+            //services.AddDbContext<CidadeContexto>(opt =>
+            //                                   opt.UseInMemoryDatabase("SPRINT05_CIDADES_CLIENTES"));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sprint05_API_Cidade", Version = "v1" });

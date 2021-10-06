@@ -6,18 +6,15 @@ namespace Sprint05_API_Cidade
 {
     public class CidadeContexto : DbContext
     {
-        public CidadeContexto(DbContextOptions<CidadeContexto> opt) : base(opt)
-        {
-
-        }
+        
 
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=SPRINT05_CIDADES_CLIENTES;");
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=SPRINT05_CIDADES_CLIENTES;");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
