@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Sprint05_API_Cidade.Controllers
@@ -14,19 +16,28 @@ namespace Sprint05_API_Cidade.Controllers
     {
         private PaisContext _context = new PaisContext();
         private IMapper _mapper;
+        private readonly HttpClient _httpClient;
 
-        public ClienteController(IMapper mapper)
+        public ClienteController(IMapper mapper, HttpClient httpClient)
         {
             _mapper = mapper;
+            _httpClient = httpClient;
         }
 
         [HttpPost("{CEP}")]
-        public IActionResult CreateCliente([FromBody] CreateClienteDTO clienteDTO, String cep)
+        public async Task<IActionResult> CreateClienteAsync([FromBody] CreateClienteDTO clienteDTO, String cep)
         {
+            //pegando a cidade da pessoa pelo CEP, utilizando o site abaixo
+            var responseString = await _httpClient.GetStringAsync("https://viacep.com.br/ws/" + cep + "/json/");
+            var catalog = JsonConvert.DeserializeObject<CatalogCep>(responseString);
+            //cruzando os valores de cidade com os do banco
+            Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Nome == catalog.localidade);
+            clienteDTO.CidadeId = cidade.Id;
+            //cadastrando cliente
             Cliente cliente = _mapper.Map<Cliente>(clienteDTO);
             _context.Clientes.Add(cliente);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(RecuperaClientePorId), new { Id = cliente.Id }, cliente);
+            return RecuperaClientePorId(cliente.Id);
         }
 
         [HttpGet]

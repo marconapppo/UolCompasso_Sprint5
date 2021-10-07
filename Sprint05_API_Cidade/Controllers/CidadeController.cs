@@ -26,7 +26,7 @@ namespace Sprint05_API_Cidade.Controllers
             Cidade cidade = _mapper.Map<Cidade>(cidadeDTO);
             _context.Cidades.Add(cidade);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(RecuperaCidadePorId), new { Id = cidade.Id }, cidade);
+            return RecuperaCidadePorId(cidade.Id);
         }
 
         [HttpGet]
@@ -48,7 +48,6 @@ namespace Sprint05_API_Cidade.Controllers
             if (cidade != null)
             {
                 ReadCidadeDTO cidadeDto = _mapper.Map<ReadCidadeDTO>(cidade);
-
                 return Ok(cidadeDto);
             }
             return NotFound();
