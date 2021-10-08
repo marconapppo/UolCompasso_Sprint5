@@ -10,23 +10,28 @@ namespace Sprint05_API_Cidade.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CidadeController : ControllerBase
+    public class CidadeController : Controller
     {
-        private PaisContext _context = new PaisContext();
+        private PaisContext _context;
         private IMapper _mapper;
 
         public CidadeController(IMapper mapper)
         {
             _mapper = mapper;
+            _context = new PaisContext();
         }
 
         [HttpPost]
         public IActionResult CreateCidade([FromBody] CreateCidadeDTO cidadeDTO)
         {
-            Cidade cidade = _mapper.Map<Cidade>(cidadeDTO);
-            _context.Cidades.Add(cidade);
-            _context.SaveChanges();
-            return RecuperaCidadePorId(cidade.Id);
+            if (ModelState.IsValid)
+            {
+                Cidade cidade = _mapper.Map<Cidade>(cidadeDTO);
+                _context.Cidades.Add(cidade);
+                _context.SaveChanges();
+                return RecuperaCidadePorId(cidade.Id);
+            }
+            return BadRequest(cidadeDTO);
         }
 
         [HttpGet]
