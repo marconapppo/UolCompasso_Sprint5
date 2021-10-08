@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http.Description;
+
 
 namespace Sprint05_API_Cidade.Controllers
 {
-    [Controller]
+    [ApiController]
     [Route("api/[controller]")]
     public class ClienteController : Controller
     {
@@ -26,7 +26,6 @@ namespace Sprint05_API_Cidade.Controllers
         }
 
         [HttpPost]
-        [ResponseType(typeof(CreateClienteDTO))]
         public async Task<IActionResult> CreateClienteAsync([FromBody] CreateClienteDTO clienteDTO)
         {
             if (ModelState.IsValid)
@@ -54,6 +53,7 @@ namespace Sprint05_API_Cidade.Controllers
             }
             return BadRequest(ModelState);
         }
+
 
         [HttpGet]
         public List<ReadClienteDTO> GetCliente()
