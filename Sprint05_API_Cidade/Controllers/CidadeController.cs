@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Sprint05_API_Cidade.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CidadeController : ControllerBase
     {
         private PaisContext _context = new PaisContext();
