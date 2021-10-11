@@ -35,7 +35,7 @@ namespace Sprint05_API_Cidade.Controllers
         }
 
         [HttpGet]
-        public List<ReadCidadeDTO> GetCidade()
+        public IActionResult GetCidade()
         {
             List<ReadCidadeDTO> cidadeDto = new List<ReadCidadeDTO>();
             
@@ -43,7 +43,7 @@ namespace Sprint05_API_Cidade.Controllers
             {
                 cidadeDto.Add(_mapper.Map<ReadCidadeDTO>(cidade));
             }
-            return cidadeDto;
+            return Ok(cidadeDto);
         }
 
         [HttpGet("{id}")]

@@ -56,14 +56,14 @@ namespace Sprint05_API_Cidade.Controllers
 
 
         [HttpGet]
-        public List<ReadClienteDTO> GetCliente()
+        public IActionResult GetCliente()
         {
             List<ReadClienteDTO> clienteDto = new List<ReadClienteDTO>();
             foreach (var cliente in _context.Clientes)
             {
                 clienteDto.Add(_mapper.Map<ReadClienteDTO>(cliente));
             }
-            return clienteDto;
+            return Ok(clienteDto);
         }
 
         [HttpGet("{id}")]
@@ -80,16 +80,37 @@ namespace Sprint05_API_Cidade.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult AtualizaCliente(Guid id, [FromBody] UpdateClienteDTO clienteDto)
+        public async Task<IActionResult> AtualizaClienteAsync(Guid id, [FromBody] UpdateClienteDTO clienteDto)
         {
-            Cliente cliente = _context.Clientes.FirstOrDefault(cliente => cliente.Id == id);
-            if (cliente == null)
+            if (ModelState.IsValid)
             {
+                Cliente cliente = _context.Clientes.FirstOrDefault(cliente => cliente.Id == id);
+                if (cliente == null)
+                {
+                    return NotFound();
+                }
+                clienteDto.Cep = clienteDto.Cep.Replace("-", "");
+                //pegando a cidade da pessoa pelo CEP, utilizando o site abaixo
+                var responseString = await _httpClient.GetStringAsync("https://viacep.com.br/ws/" + clienteDto.Cep + "/json/");
+                var catalog = JsonConvert.DeserializeObject<CatalogCep>(responseString);
+                //cruzando os valores de cidade com os do banco
+                Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Nome == catalog.localidade);
+                if (cidade != null)
+                {
+                    //recebendo valores de cidade e catalog, e caso logradouro ou bairro seja null, insere o que veio no corpo
+                    if (!string.IsNullOrEmpty(catalog.logradouro)) { clienteDto.Logradouro = catalog.logradouro; }
+                    if (!string.IsNullOrEmpty(catalog.bairro)) { clienteDto.Bairro = catalog.bairro; }
+                    //o dto nao possui  cidadeId, então eu insero direto
+                    cliente.CidadeId = cidade.Id;
+                    //alterando valores de cliente
+                    _mapper.Map(clienteDto, cliente);
+                    _context.SaveChanges();
+                    return RecuperaClientePorId(cliente.Id);
+                }
                 return NotFound();
             }
-            _mapper.Map(clienteDto, cliente);
-            _context.SaveChanges();
-            return NoContent();
+            return BadRequest(ModelState);
+            
         }
 
         [HttpDelete("{id}")]

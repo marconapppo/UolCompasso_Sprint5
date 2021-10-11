@@ -16,12 +16,16 @@ namespace Sprint05_API_Cidade
         //public Guid CidadeId { get; set; }
 
         [Required(ErrorMessage = "O campo Cep é obrigatório")]
+        [RegularExpression(@"^[0-9]{5}-?[0-9]{3}$",
+         ErrorMessage = "O campo Cep é inválido.")]
         public string Cep { get; set; }
 
-        [Required(ErrorMessage = "O campo Logradouro é obrigatório")]
+        [Required(ErrorMessage = "O campo Logradouro é obrigatório, " +
+            "algunas CEPs não apresentam logradouro, caso o seu apresente, digite qualquer palavra, caso não, digite seu logradouro")]
         public string Logradouro { get; set; }
 
-        [Required(ErrorMessage = "O campo Bairro é obrigatório")]
+        [Required(ErrorMessage = "O campo bairro é obrigatório, " +
+            "algunas CEPs não apresentam bairro, caso o seu apresente, digite qualquer palavra, caso não, digite seu logradouro")]
         public string Bairro { get; set; }
         //public Cidade Cidade { get; set; }
     }
