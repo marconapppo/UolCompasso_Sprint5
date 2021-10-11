@@ -74,3 +74,4 @@ C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\ne
 C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
 C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\System.Net.Http.Formatting.dll
 C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\System.Web.Http.dll
+C:\Users\gabri\source\repos\Sprint05_API_Cidade\Sprint05_API_Cidade\bin\Debug\net5.0\FluentValidation.dll

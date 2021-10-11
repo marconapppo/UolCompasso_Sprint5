@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -24,14 +26,16 @@ namespace Sprint05_API_Cidade.Controllers
         [HttpPost]
         public IActionResult CreateCidade([FromBody] CreateCidadeDTO cidadeDTO)
         {
-            if (ModelState.IsValid)
-            {
-                Cidade cidade = _mapper.Map<Cidade>(cidadeDTO);
-                _context.Cidades.Add(cidade);
-                _context.SaveChanges();
-                return RecuperaCidadePorId(cidade.Id);
-            }
-            return BadRequest(ModelState);
+            //validando cidade
+            var validator = new CreateCidadeValidator();
+            ValidationResult results = validator.Validate(cidadeDTO);
+            IList<ValidationFailure> failures = results.Errors;
+            if (!results.IsValid) { return BadRequest(failures); }
+            //inserindo cidade
+            Cidade cidade = _mapper.Map<Cidade>(cidadeDTO);
+            _context.Cidades.Add(cidade);
+            _context.SaveChanges();
+            return RecuperaCidadePorId(cidade.Id);
         }
 
         [HttpGet]
@@ -61,18 +65,20 @@ namespace Sprint05_API_Cidade.Controllers
         [HttpPut("{id}")]
         public IActionResult AtualizaCidade(Guid id, [FromBody] UpdateCidadeDTO cidadeDto)
         {
-            if (ModelState.IsValid)
+            //validando cidade
+            var validator = new UpdateCidadeValidator();
+            ValidationResult results = validator.Validate(cidadeDto);
+            IList<ValidationFailure> failures = results.Errors;
+            if (!results.IsValid) { return BadRequest(failures); }
+            //atualizando cidade
+            Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Id == id);
+            if (cidade == null)
             {
-                Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Id == id);
-                if (cidade == null)
-                {
-                    return NotFound();
-                }
-                _mapper.Map(cidadeDto, cidade);
-                _context.SaveChanges();
-                return RecuperaCidadePorId(cidade.Id);
+                return NotFound();
             }
-            return BadRequest(ModelState);
+            _mapper.Map(cidadeDto, cidade);
+            _context.SaveChanges();
+            return RecuperaCidadePorId(cidade.Id);
         }
 
         [HttpDelete("{id}")]
