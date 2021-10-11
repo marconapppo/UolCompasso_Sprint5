@@ -31,7 +31,7 @@ namespace Sprint05_API_Cidade.Controllers
                 _context.SaveChanges();
                 return RecuperaCidadePorId(cidade.Id);
             }
-            return BadRequest(cidadeDTO);
+            return BadRequest(ModelState);
         }
 
         [HttpGet]
@@ -61,14 +61,18 @@ namespace Sprint05_API_Cidade.Controllers
         [HttpPut("{id}")]
         public IActionResult AtualizaCidade(Guid id, [FromBody] UpdateCidadeDTO cidadeDto)
         {
-            Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Id == id);
-            if (cidade == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Id == id);
+                if (cidade == null)
+                {
+                    return NotFound();
+                }
+                _mapper.Map(cidadeDto, cidade);
+                _context.SaveChanges();
+                return RecuperaCidadePorId(cidade.Id);
             }
-            _mapper.Map(cidadeDto, cidade);
-            _context.SaveChanges();
-            return NoContent();
+            return BadRequest(ModelState);
         }
 
         [HttpDelete("{id}")]
