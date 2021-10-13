@@ -29,23 +29,22 @@ namespace Sprint05_API_Cidade.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateClienteAsync([FromBody] CreateClienteDTO clienteDTO)
         {
+            //pegando a cidade da pessoa pelo CEP, utilizando o site abaixo
+            clienteDTO.Cep = clienteDTO.Cep.Replace("-", "");
+            var responseString = await _httpClient.GetStringAsync("https://viacep.com.br/ws/" + clienteDTO.Cep + "/json/");
+            var catalog = JsonConvert.DeserializeObject<CatalogCep>(responseString);
+            //recebendo valores de cidade e catalog, e caso logradouro ou bairro seja null, insere o que veio no corpo
+            if (!string.IsNullOrEmpty(catalog.logradouro)) { clienteDTO.Logradouro = catalog.logradouro; }
+            if (!string.IsNullOrEmpty(catalog.bairro)) { clienteDTO.Bairro = catalog.bairro; }
             //validando cliente
             var validator = new CreateClienteValidator();
             ValidationResult results = validator.Validate(clienteDTO);
             IList<ValidationFailure> failures = results.Errors;
             if (!results.IsValid) { return BadRequest(failures); }
-            //criando cliente
-            clienteDTO.Cep = clienteDTO.Cep.Replace("-", "");
-            //pegando a cidade da pessoa pelo CEP, utilizando o site abaixo
-            var responseString = await _httpClient.GetStringAsync("https://viacep.com.br/ws/" + clienteDTO.Cep + "/json/");
-            var catalog = JsonConvert.DeserializeObject<CatalogCep>(responseString);
             //cruzando os valores de cidade com os do banco
             Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Nome == catalog.localidade);
             if (cidade != null)
             {
-                //recebendo valores de cidade e catalog, e caso logradouro ou bairro seja null, insere o que veio no corpo
-                if(!string.IsNullOrEmpty(catalog.logradouro)) { clienteDTO.Logradouro = catalog.logradouro; }
-                if (!string.IsNullOrEmpty(catalog.bairro)) { clienteDTO.Bairro = catalog.bairro; }
                 //cadastrando cliente
                 Cliente cliente = _mapper.Map<Cliente>(clienteDTO);
                 //o dto nao possui  cidadeId, então eu insero direto
@@ -85,6 +84,13 @@ namespace Sprint05_API_Cidade.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> AtualizaClienteAsync(Guid id, [FromBody] UpdateClienteDTO clienteDto)
         {
+            //pegando a cidade da pessoa pelo CEP, utilizando o site abaixo
+            clienteDto.Cep = clienteDto.Cep.Replace("-", "");
+            var responseString = await _httpClient.GetStringAsync("https://viacep.com.br/ws/" + clienteDto.Cep + "/json/");
+            var catalog = JsonConvert.DeserializeObject<CatalogCep>(responseString);
+            //recebendo valores de cidade e catalog, e caso logradouro ou bairro seja null, insere o que veio no corpo
+            if (!string.IsNullOrEmpty(catalog.logradouro)) { clienteDto.Logradouro = catalog.logradouro; }
+            if (!string.IsNullOrEmpty(catalog.bairro)) { clienteDto.Bairro = catalog.bairro; }
             //validando cliente
             var validator = new UpdateClienteValidator();
             ValidationResult results = validator.Validate(clienteDto);
@@ -96,17 +102,10 @@ namespace Sprint05_API_Cidade.Controllers
             {
                 return NotFound();
             }
-            clienteDto.Cep = clienteDto.Cep.Replace("-", "");
-            //pegando a cidade da pessoa pelo CEP, utilizando o site abaixo
-            var responseString = await _httpClient.GetStringAsync("https://viacep.com.br/ws/" + clienteDto.Cep + "/json/");
-            var catalog = JsonConvert.DeserializeObject<CatalogCep>(responseString);
             //cruzando os valores de cidade com os do banco
             Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Nome == catalog.localidade);
             if (cidade != null)
             {
-                //recebendo valores de cidade e catalog, e caso logradouro ou bairro seja null, insere o que veio no corpo
-                if (!string.IsNullOrEmpty(catalog.logradouro)) { clienteDto.Logradouro = catalog.logradouro; }
-                if (!string.IsNullOrEmpty(catalog.bairro)) { clienteDto.Bairro = catalog.bairro; }
                 //o dto nao possui  cidadeId, então eu insero direto
                 cliente.CidadeId = cidade.Id;
                 //alterando valores de cliente
