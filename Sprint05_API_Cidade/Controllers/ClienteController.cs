@@ -29,6 +29,11 @@ namespace Sprint05_API_Cidade.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateClienteAsync([FromBody] CreateClienteDTO clienteDTO)
         {
+            //validando cliente
+            var validator = new CreateClienteValidator();
+            ValidationResult results = validator.Validate(clienteDTO);
+            IList<ValidationFailure> failures = results.Errors;
+            if (!results.IsValid) { return BadRequest(failures); }
             //pegando a cidade da pessoa pelo CEP, utilizando o site abaixo
             clienteDTO.Cep = clienteDTO.Cep.Replace("-", "");
             var responseString = await _httpClient.GetStringAsync("https://viacep.com.br/ws/" + clienteDTO.Cep + "/json/");
@@ -36,11 +41,6 @@ namespace Sprint05_API_Cidade.Controllers
             //recebendo valores de cidade e catalog, e caso logradouro ou bairro seja null, insere o que veio no corpo
             if (!string.IsNullOrEmpty(catalog.logradouro)) { clienteDTO.Logradouro = catalog.logradouro; }
             if (!string.IsNullOrEmpty(catalog.bairro)) { clienteDTO.Bairro = catalog.bairro; }
-            //validando cliente
-            var validator = new CreateClienteValidator();
-            ValidationResult results = validator.Validate(clienteDTO);
-            IList<ValidationFailure> failures = results.Errors;
-            if (!results.IsValid) { return BadRequest(failures); }
             //cruzando os valores de cidade com os do banco
             Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Nome == catalog.localidade);
             if (cidade != null)
@@ -84,6 +84,11 @@ namespace Sprint05_API_Cidade.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> AtualizaClienteAsync(Guid id, [FromBody] UpdateClienteDTO clienteDto)
         {
+            //validando cliente
+            var validator = new UpdateClienteValidator();
+            ValidationResult results = validator.Validate(clienteDto);
+            IList<ValidationFailure> failures = results.Errors;
+            if (!results.IsValid) { return BadRequest(failures); }
             //pegando a cidade da pessoa pelo CEP, utilizando o site abaixo
             clienteDto.Cep = clienteDto.Cep.Replace("-", "");
             var responseString = await _httpClient.GetStringAsync("https://viacep.com.br/ws/" + clienteDto.Cep + "/json/");
@@ -91,11 +96,6 @@ namespace Sprint05_API_Cidade.Controllers
             //recebendo valores de cidade e catalog, e caso logradouro ou bairro seja null, insere o que veio no corpo
             if (!string.IsNullOrEmpty(catalog.logradouro)) { clienteDto.Logradouro = catalog.logradouro; }
             if (!string.IsNullOrEmpty(catalog.bairro)) { clienteDto.Bairro = catalog.bairro; }
-            //validando cliente
-            var validator = new UpdateClienteValidator();
-            ValidationResult results = validator.Validate(clienteDto);
-            IList<ValidationFailure> failures = results.Errors;
-            if (!results.IsValid) { return BadRequest(failures); }
             //autalizando cliente
             Cliente cliente = _context.Clientes.FirstOrDefault(cliente => cliente.Id == id);
             if (cliente == null)
